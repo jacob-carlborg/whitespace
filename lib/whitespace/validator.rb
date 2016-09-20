@@ -1,7 +1,22 @@
 module Whitespace
   class Validator
-    IGNORED_PATHS = %w(vendor .git tmp log coverage).freeze
     TRAILING_WHITESPACE_PATTERN = / +$/
+
+    Config = Struct.new(:ignored_paths) do
+      DEFAULT_IGNORED_PATHS = %w(.git .svn .hg).freeze
+
+      def initialize(options)
+        options.each { |option, value| self[option] = value }
+        set_ignored_paths!
+      end
+
+      private
+
+      def set_ignored_paths!
+        paths = DEFAULT_IGNORED_PATHS + ignored_paths
+        self.ignored_paths = paths.map { |e| File.absolute_path(e) }
+      end
+    end
 
     Line = Struct.new(:filename, :line, :number) do
       def line
@@ -21,9 +36,13 @@ module Whitespace
 
     class ValidatingFile
       attr_reader :filename
+      attr_reader :ignored_paths
+      attr_reader :full_path
 
-      def initialize(filename)
+      def initialize(filename, ignored_paths)
         @filename = filename
+        @full_path = File.absolute_path(filename)
+        @ignored_paths = ignored_paths
       end
 
       def file?
@@ -31,7 +50,7 @@ module Whitespace
       end
 
       def ignore?
-        !IGNORED_PATHS.find { |e| filename.start_with?(e) }.nil?
+        !ignored_paths.find { |e| full_path.start_with?(e) }.nil?
       end
 
       def grep
@@ -41,26 +60,27 @@ module Whitespace
       end
     end
 
-    private_constant :IGNORED_PATHS
     private_constant :TRAILING_WHITESPACE_PATTERN
     private_constant :Line
     private_constant :ValidatingFile
 
-    def self.validate(path)
-      validator = new(path)
+    def self.validate(path, config)
+      validator = new(path, config)
       validator.print_diagnostics(validator.validate)
     end
 
     attr_reader :path
+    attr_reader :config
 
-    def initialize(path)
+    def initialize(path, config)
       @path = path
+      @config = config
     end
 
     def validate
       path = File.join(self.path, '**/*')
       Dir.glob(path)
-        .map { |e| ValidatingFile.new(e) }
+        .map { |e| ValidatingFile.new(e, config.ignored_paths) }
         .select(&:file?)
         .reject(&:ignore?)
         .flat_map(&:grep)

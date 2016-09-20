@@ -19,7 +19,7 @@ module Whitespace
            desc: 'A list paths to ignore'
 
     def validate(path = '.')
-      Validator.validate(path, Validator::Config.new(options))
+      Validator.invoke(path, Whitespace::Base::Config.new(options))
     end
 
     desc 'strip [PATH]', 'Strips trailing whitespace in all files in the ' \
@@ -38,7 +38,7 @@ module Whitespace
            desc: 'A list paths to ignore'
 
     def strip(path = '.')
-      Stripper.strip(path, Stripper::Config.new(options))
+      Stripper.invoke(path, Whitespace::Base::Config.new(options))
     end
   end
 end

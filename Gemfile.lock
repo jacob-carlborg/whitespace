@@ -92,13 +92,14 @@ PLATFORMS
 DEPENDENCIES
   aruba (~> 0.14)
   bundler (~> 1.13)
-  pry-byebug (~> 3.3)
+  pry-byebug (~> 3.4.0)
+  pry-debugger (~> 0.2.3)
   pry-rescue (~> 1.4)
   pry-stack_explorer (~> 0.4.9)
   rake (~> 10.0)
   redcarpet (~> 3.3)
   rspec (~> 3.4)
-  rubocop (~> 0.38)
+  rubocop (~> 0.43.0)
   whitespace!
   yard (~> 0.8.7)
 

@@ -1,4 +1,4 @@
-# Whitespace
+# Whitespace [![Build Status](https://travis-ci.org/jacob-carlborg/whitespace.svg?branch=master)](https://travis-ci.org/jacob-carlborg/whitespace)
 
 Whitespace is a tool for validating and stripping trailing whitespace.
 

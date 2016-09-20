@@ -1,0 +1,11 @@
+#!/usr/bin/env ruby
+
+git_path = File.expand_path('../../.git', __FILE__)
+
+if File.exist?(git_path)
+  $LOAD_PATH << File.expand_path('../../lib', __FILE__)
+  require 'bundler/setup'
+end
+
+require 'whitespace'
+Whitespace::Application.start(ARGV)

@@ -33,6 +33,7 @@ Gem::Specification.new do |spec|
 
   spec.add_dependency 'thor', '~> 0.19'
 
+  spec.add_development_dependency 'aruba', '~> 0.14'
   spec.add_development_dependency 'bundler', '~> 1.13'
   spec.add_development_dependency 'pry-byebug', '~> 3.3'
   spec.add_development_dependency 'pry-rescue', '~> 1.4'

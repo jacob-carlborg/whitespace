@@ -2,7 +2,7 @@ module Whitespace
   class Stripper < Base
     class File < Base::File
       def strip
-        lines = ::File.readlines(filename)
+        lines = ::File.readlines(filename, encoding: Encoding::BINARY)
         write_file = false
 
         lines.map do |line|

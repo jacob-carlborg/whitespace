@@ -14,10 +14,7 @@ Feature: `strip` command
       foo    
       """
     When I successfully run `ws strip`
-    Then the file "foo.txt" should contain:
-      """
-      foo
-      """
+    Then the file "foo.txt" should match /^foo$/
 
   Scenario: Invoking `strip` with a file without trailing whitespace
     Given a file named "foo.txt" with:
@@ -38,10 +35,7 @@ Feature: `strip` command
       foo    
       """
     When I successfully run `ws strip`
-    Then the file ".git/foo.txt" should contain:
-      """
-      foo    
-      """
+    Then the file ".git/foo.txt" should match /^foo    $/
 
   Scenario: Using the `--ignored-paths` flag
     Given a file named "foo/a.txt" with:
@@ -53,11 +47,5 @@ Feature: `strip` command
       foo    
       """
     When I successfully run `ws strip --ignored-paths foo`
-    Then the file "foo/a.txt" should contain:
-      """
-      bar    
-      """
-    And the file "b.txt" should contain:
-      """
-      foo
-      """
+    Then the file "foo/a.txt" should match /^bar    $/
+    And the file "b.txt" should match /^foo$/

@@ -16,6 +16,11 @@ Feature: `strip` command
     When I successfully run `ws strip`
     Then the file "foo.txt" should match /^foo$/
 
+  Scenario: Invoking `strip` with a file containing trailing whitespace and invalid UTF-8
+    Given a file named "foo.txt" with invalid UTF-8 content "\x80"
+    When I successfully run `ws strip`
+    Then the file "foo.txt" should contain exactly invalid UTF-8 "\x80"
+
   Scenario: Invoking `strip` with a file without trailing whitespace
     Given a file named "foo.txt" with:
       """
